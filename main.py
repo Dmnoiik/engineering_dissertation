@@ -7,7 +7,6 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver import ChromeOptions
 from districs import Gdansk, Gdynia
 
-is_running = True
 CHROME_DRIVER_PATH = "C:/Users/dmars/Documents/PRACA_INZYNIERSKA/project_python/chromedriver.exe"
 options = webdriver.ChromeOptions()
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
@@ -22,7 +21,6 @@ driver = webdriver.Chrome(service=selenium_service, options=options)
 
 gdansk_controller = Gdansk()
 gdynia_controller = Gdynia()
-# while is_running:
 if gdansk_controller.file_present is False or gdynia_controller.file_present is False:
     # Gdansk
     gdansk_controller.create_district_files()
@@ -44,7 +42,6 @@ time.sleep(3)
 suggestion_item = driver.find_element(By.CSS_SELECTOR, "[data-cy='checkboxButton']")
 suggestion_item.click()
 search_confirm_button.click()
-
 time.sleep(2)
 all_offers = driver.find_elements(By.CSS_SELECTOR, "[data-cy='search.listing.organic'] [data-cy='listing-item']")
 info = []
