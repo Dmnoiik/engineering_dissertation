@@ -1,16 +1,33 @@
+<!-- index.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Fetching Offers with Bootstrap Progress Bar</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        #offers_container {
+            margin-top: 20px;
+        }
+        .spinner {
+            display: none;
+        }
+        .spinner.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-<h1>blabla</h1>
-{% for offer in offers %}
-    <div>
-    <p>{{ offer }}</p>
+    <div class="container">
+        <button id="offers_button" class="btn btn-primary">GET OFFERS</button>
+        <div class="spinner" id="spinner">
+            <i class="fas fa-spinner fa-spin"></i> <!-- Font Awesome spinner -->
+        </div>
+        <div id="offers_container"></div>
     </div>
-{% endfor %}
 
+    <script src="{% static "request_offers_otodom.js" %}"></script>
 </body>
 </html>

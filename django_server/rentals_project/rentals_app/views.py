@@ -1,12 +1,20 @@
-import pandas
+import json
+
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.http import HttpResponse
-# from main import main_fun
+
+
 # Create your views here.
 
 def index(request):
-    # info = main_fun()
-    district = pandas.read_csv("C:/Users/dmars/Documents/PRACA_INZYNIERSKA/project_python/Śródmieście.csv")
-    for x in district["Title"].values:
-        print(x)
-    return render(request, "base.html", {"offers": district["Title"].values})
+    return render(request, "base.html")
+
+
+def get_offers_selenium_req(request):
+    from .scripts import test
+    try:
+        result = test.get_offers()
+        return JsonResponse({"offers": result})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
