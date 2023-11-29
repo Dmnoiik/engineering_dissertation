@@ -6,7 +6,7 @@ from selenium.webdriver import ChromeOptions
 
 import time
 
-def get_offers():
+def get_offers(district, town):
     CHROME_DRIVER_PATH = "C:/Users/dmars/Documents/PRACA_INZYNIERSKA/project_python/django_server/rentals_project/rentals_app/scripts/chromedriver.exe"
     options = ChromeOptions()
     user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
@@ -25,7 +25,7 @@ def get_offers():
     driver.find_element(By.ID, "location").click()
     search_place_input = driver.find_element(By.CSS_SELECTOR, "[data-cy='location-picker-input']")
 
-    search_place_input.send_keys("Żabianka" + " Gdańsk")
+    search_place_input.send_keys(f"{district} {town}")
     time.sleep(3)
     suggestion_item = driver.find_element(By.CSS_SELECTOR, "[data-cy='checkboxButton']")
     suggestion_item.click()
