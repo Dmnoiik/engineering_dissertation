@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css_styles %}
+    <link href="{% static "styles/offers_page_styles.css" %}" rel="stylesheet"/>
+{% endblock css_styles %}
+
+{% block content %}
+    {% include "components/header_component.html" %}
+    <div class="wrapper">
+        <div class="container">
+            <div class="info-container">
+                <p class="info-overview">xxx pokojów do wynajęcia w Dzielnica, Miasto</p>
+                <div class="info-settings-container">
+                    <select class="info-grouping">
+                        <option>Grupuj</option>
+                        <option>Cena malejąca</option>
+                        <option>Cena rosnąca</option>
+                    </select>
+                </div>
+            </div>
+            <div class="content-container">
+                <div class="settings-container">
+                    <div class="settings-price-container">
+                        <div class="settings-price-min">
+                            <p>Cena minimalna</p>
+                            <input type="text">
+                        </div>
+                        <div class="settings-price-max">
+                            <p>Cena maksymalna</p>
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="settings-size-container">
+                        <label>Powierzchnia: </label>
+                        <ul>
+                            <li><input type="radio">15 m2 lub więcej</li>
+                            <li><input type="radio">30 m2 lub więcej</li>
+                            <li><input type="radio">45 m2 lub więcej</li>
+                            <li><input type="radio">60 m2 lub więcej</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="offers-container">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "components/footer_component.html" %}
+    <script src="{% static "js/offers_page.js" %}"></script>
+{% endblock content %}
