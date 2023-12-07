@@ -1,6 +1,7 @@
 const townDropdown = document.querySelector(".town-selector");
 const districtDropdown = document.querySelector(".district-selector");
 const offersButton = document.querySelector(".get-offers-button");
+
 townDropdown.addEventListener("change", async (event) => {
     const cityName = townDropdown.value;
     const response = await fetch(`/get_districts/${cityName}`)

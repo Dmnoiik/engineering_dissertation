@@ -12,10 +12,13 @@
             <div class="info-container">
                 <p class="info-overview">xxx pokojów do wynajęcia w Dzielnica, Miasto</p>
                 <div class="info-settings-container">
-                    <select class="info-grouping">
-                        <option>Grupuj</option>
-                        <option>Cena malejąca</option>
-                        <option>Cena rosnąca</option>
+                    <select class="info-sorting">
+                        <option disabled selected>Grupuj</option>
+                        <option value="default">Domyślnie</option>
+                        <option value="desc">Cena malejąco</option>
+                        <option value="asc">Cena rosnąco</option>
+                        <option value="rent-desc">Czynsz malejąco</option>
+                        <option value="rent-asc">Czynsz rosnąco</option>
                     </select>
                 </div>
             </div>
@@ -23,21 +26,27 @@
                 <div class="settings-container">
                     <div class="settings-price-container">
                         <div class="settings-price-min">
-                            <p>Cena minimalna</p>
-                            <input type="text">
-                        </div>
+                                <p class="price-label">Cena minimalna</p>
+                            <div class="input-prefix">
+                                <span class="price-min-prefix">zł</span>
+                                <input type="text" class="price-min-input">
+                            </div>
+                         </div>
                         <div class="settings-price-max">
-                            <p>Cena maksymalna</p>
-                            <input type="text">
+                            <p class="price-label">Cena maksymalna</p>
+                            <div class="input-prefix">
+                                <span class="price-min-prefix">zł</span>
+                                <input type="text" class="price-max-input">
+                            </div>
                         </div>
                     </div>
                     <div class="settings-size-container">
-                        <label>Powierzchnia: </label>
-                        <ul>
-                            <li><input type="radio">15 m2 lub więcej</li>
-                            <li><input type="radio">30 m2 lub więcej</li>
-                            <li><input type="radio">45 m2 lub więcej</li>
-                            <li><input type="radio">60 m2 lub więcej</li>
+                        <p class="size-label">Powierzchnia: </p>
+                        <ul class="size-list">
+                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input" value="15">15 m2 lub więcej</li>
+                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input" value="30">30 m2 lub więcej</li>
+                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input" value="45">45 m2 lub więcej</li>
+                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input" value="60">60 m2 lub więcej</li>
                         </ul>
                     </div>
                 </div>

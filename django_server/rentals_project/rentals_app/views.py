@@ -1,7 +1,7 @@
 import pandas as pd
 from django.http import JsonResponse
 from django.shortcuts import render
-
+from django.core.cache import cache
 # Create your views here.
 
 def index(request):
@@ -13,10 +13,18 @@ def offers_page(request):
 def get_offers_otodom(request):
     from .scripts import otodom_selenium
     try:
+
         district_result = request.GET.get("district")
         town_result = request.GET.get("town")
-        result = otodom_selenium.get_offers(district_result, town_result)
-        return JsonResponse({"offers": result, "website": "otodom"})
+        cache_key = f"otodom_offers_{town_result}_{district_result}"
+        cached_offers = cache.get(cache_key)
+
+        if cached_offers is None:
+            result = otodom_selenium.get_offers(district_result, town_result)
+            cache.set(cache_key, result, timeout=3600)
+            return JsonResponse({"offers": result, "website": "otodom"})
+        else:
+            return JsonResponse({"offers": cached_offers, "website": "otodom"})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 

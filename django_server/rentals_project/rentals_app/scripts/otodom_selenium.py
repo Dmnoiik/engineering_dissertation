@@ -42,6 +42,7 @@ def get_offers(district, town):
         offer_link = offer.find_element(By.CLASS_NAME, "e1dfeild2").get_attribute("href")
         price, num_of_rooms, surface = article_element.find_elements(By.CLASS_NAME, "ei6hyam2")
         price, num_of_rooms, surface = price.text, num_of_rooms.text, surface.text
+        surface = get_the_surface(surface);
         price = get_the_price(price)
         image_link = offer.find_element(By.CLASS_NAME, "e10oxrv20").get_attribute("src")
         num_of_rooms = int(num_of_rooms.split(" ")[0])
@@ -49,7 +50,7 @@ def get_offers(district, town):
         try:
             rent = int(rent.split(" ")[2])
         except:
-            rent = "N/A"
+            rent = -1
         address = article_element.find_element(By.CSS_SELECTOR, "div + p").text
         info.append({"title": offer_title, "address": address,
                      "surface": surface, "price": price, "rent": rent, "rooms": num_of_rooms,
@@ -62,3 +63,7 @@ def get_the_price(price_text):
     if len(split_price) > 2:
         return int(float(split_price[0] + split_price[1]))
     return int(float(split_price[0]))
+
+def get_the_surface(surface_text):
+    split_surface = surface_text.replace(",", ".").split(" ")
+    return int(float(split_surface[0]))

@@ -70,6 +70,16 @@ TEMPLATES = [
     },
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'TIMEOUT': 3600,  # Cache timeout in seconds (e.g., 1 hour)
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000  # Maximum number of cached entries
+        }
+    }
+}
+
 WSGI_APPLICATION = 'rentals_project.wsgi.application'
 
 
