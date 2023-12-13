@@ -38,11 +38,11 @@ def get_offers_olx(district, town):
     for offer in offers:
         link_el = offer.find_element(By.TAG_NAME, "a")
         link = link_el.get_attribute("href")
+        offer_id = link[:-5].split("-")[-1]
         if "otodom" in link:
             continue
         driver_olx.switch_to.new_window("tab")
         driver_olx.get(link)
-
         price_element = driver_olx.find_element(By.CSS_SELECTOR, "[data-testid='ad-price-container']")
         price = price_element.find_element(By.TAG_NAME, "h3").text
         price = get_the_price(price)
@@ -61,7 +61,7 @@ def get_offers_olx(district, town):
                 num_of_rooms = get_the_rooms_olx(offer_tag.text)
         info.append({"address": F"{district}, {town}",
                      "surface": surface, "price": price, "rent": rent, "rooms": num_of_rooms,
-                     "link": link, "image_link": image_link, "website": "olx"})
+                     "link": link, "image_link": image_link, "website": "olx", "offer_id": offer_id})
         driver_olx.close()
         driver_olx.switch_to.window(driver_olx.window_handles[0])
     driver_olx.quit()

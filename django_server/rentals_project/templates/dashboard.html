@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css_styles %}
+    <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+{% endblock css_styles %}
+{% block content %}
+    {% include "components/header_component.html" %}
+    <div class="dashboard-container">
+        <main class="dashboard-main">
+            <header class="main-header">
+                <div class="user-welcome">
+                    <h2>Cześć, {{ user.username }}!</h2>
+                </div>
+                <div class="user-actions">
+                    <a href="{% url "index" %}">
+                        <button type="button">Strona główna</button>
+                    </a>
+                </div>
+            </header>
+            <section class="favorites-section">
+                <h2>Twoje zapisane oferty: </h2>
+                <div class="offers-container">
+                    {% for favorite_offer in favorite_offers %}
+                        <div class="card" id="{{ favorite_offer.offer_id }}">
+                        <a href="{{ favorite_offer.link }}" target="_blank">
+                            <div class="card-image">
+                                <img src={{ favorite_offer.image_link }}>
+                            </div>
+                            <div class="card-info">
+                                <div class="card-money">
+                                    <p class="card-money-general"><span
+                                            class="card-money-price">{{ favorite_offer.price|floatformat:"0" }}</span>/miesięcznie (Czynsz: <span
+                                            class="card-money-rent">{{ favorite_offer.rent|floatformat:"0" }}</span>)</p>
+                                </div>
+                                <div class="card-address">
+                                    <p>{{ favorite_offer.address }}</p>
+                                </div>
+                                <div class="card-details">
+                                    <span class="card-details-info">Pokoje: {{ favorite_offer.rooms }} • {{ favorite_offer.surface }}m²</span>
+                                </div>
+                            </div>
+                            <div class="card-website-info">
+                                <span class="card-website-name">{{ favorite_offer.website }}</span>
+                            </div>
+                        </a>
+                        </div>
+                    {% endfor %}
+    </div>
+    </section>
+    </main>
+    </div>
+    {% include "components/footer_component.html" %}
+{% endblock %}

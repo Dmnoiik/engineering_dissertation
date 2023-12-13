@@ -40,6 +40,7 @@ def get_offers_otodom(district, town):
         article_element = offer.find_element(By.TAG_NAME, "article")
         offer_title = offer.find_element(By.CSS_SELECTOR, "[data-cy='listing-item-title']").text
         offer_link = offer.find_element(By.CLASS_NAME, "e1dfeild2").get_attribute("href")
+        offer_id = offer_link.split("-")[-1]
         price, num_of_rooms, surface = article_element.find_elements(By.CLASS_NAME, "ei6hyam2")
         price, num_of_rooms, surface = price.text, num_of_rooms.text, surface.text
         surface = get_the_surface_otodom(surface)
@@ -54,7 +55,7 @@ def get_offers_otodom(district, town):
         address = article_element.find_element(By.CSS_SELECTOR, "div + p").text
         info.append({"title": offer_title, "address": address,
                      "surface": surface, "price": price, "rent": rent, "rooms": num_of_rooms,
-                     "link": offer_link, "image_link": image_link, "website": "otodom"})
+                     "link": offer_link, "image_link": image_link, "website": "otodom", "offer_id": offer_id})
     driver_otodom.quit()
     return info
 

@@ -38,6 +38,21 @@
   display: flex;
   justify-content: flex-end;
 }
+
+
+
+.button {
+  color: var(--dl-color-gray-white);
+  transition: 0.3s;
+  font-weight: bold;
+  border-color: var(--dl-color-primary1-blue100);
+  padding-left: 1.5rem;
+  border-radius: 45px;
+  padding-right: 1.5rem;
+  background-color: var(--dl-color-primary1-blue100);
+  cursor: pointer;
+}
+
 .home-buttons {
   display: flex;
   align-items: center;
@@ -51,6 +66,7 @@
   padding-left: 1.5rem;
   border-radius: 45px;
   padding-right: 1.5rem;
+  cursor: pointer;
 }
 .home-register {
   color: var(--dl-color-gray-white);
@@ -61,6 +77,7 @@
   border-radius: 45px;
   padding-right: 1.5rem;
   background-color: var(--dl-color-primary1-blue100);
+  cursor: pointer;
 }
 .home-register:hover {
   border-color: rgba(41, 20, 119, 0.9);
@@ -68,6 +85,15 @@
   padding-right: 1.5rem;
   background-color: rgba(41, 20, 119, 0.9);
 }
+
+.button:hover {
+  border-color: rgba(41, 20, 119, 0.9);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background-color: rgba(41, 20, 119, 0.9);
+  color: white;
+}
+
 .home-burger-menu {
   display: none;
 }
@@ -133,6 +159,7 @@
   padding-left: 1.5rem;
   border-radius: 30px;
   padding-right: 1.5rem;
+
 }
 .home-register1 {
   color: var(--dl-color-gray-white);

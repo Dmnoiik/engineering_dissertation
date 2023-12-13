@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css_styles %}
+<link rel="stylesheet" href="{% static 'styles/forms/registerStyles.css' %}">
+{% endblock css_styles %}
+{% block content %}
+    <div class="wrapper">
+        <div class="register-form-container">
+            <section class="register-form-header">
+                <div class="register-form-logo"><span>RENTFUSSION</span></div>
+                <div class="register-form-hero">
+                    <h2 class="register-form-hero--heading">
+                        Załóż bezpłatne konto
+                    </h2>
+                    <p class="register-form-hero--paragraph">ciesz się ze wszystkich funkcjonalności!</p>
+                </div>
+            </section>
+            <form method="post" class="register-form">
+                {% csrf_token %}  <!-- Include CSRF token for form submission -->
+                <div class="register-form-group">
+                    <label for="id_username">Nazwa użytkownika: </label>
+                    {{ form.username }}
+                </div>
+                <div class="register-form-group">
+                    <label for="id_email">Email: </label>
+                    {{ form.email }}
+                </div>
+                <div class="register-form-group">
+                    <label for="id_password">Hasło: </label>
+                    {{ form.password }}
+                </div>
+                <div class="register-form-group">
+                <button type="submit" id="submit-btn">Login</button>
+                </div>
+            </form>
+            <div class="register-form-login">
+                <p class="register-form-login--paragraph">Masz już konto? <a class="register-form-login--redirect" href="{% url "login" %}">Zaloguj się</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="{% static "js/registration.js" %}"></script>
+{% endblock content %}

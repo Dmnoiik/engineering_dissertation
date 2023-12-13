@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+{% block css_styles %}
+    <link rel="stylesheet" href="{% static 'styles/forms/loginStyles.css' %}">
+{% endblock css_styles %}
+{% block content %}
+    <div class="wrapper">
+        <div class="login-form-container">
+            <section class="login-form-header">
+                <div class="login-form-logo"><span>RENTFUSSION</span></div>
+                <div class="login-form-hero">
+                    <h2 class="login-form-hero--heading">
+                        Załóż bezpłatne konto
+                    </h2>
+                    <p class="login-form-hero--paragraph">ciesz się ze wszystkich funkcjonalności!</p>
+                </div>
+            </section>
+            <form method="post" class="login-form">
+                {% csrf_token %}  <!-- Include CSRF token for form submission -->
+                <div class="login-form-group">
+                    <label for="id_username">Nazwa użytkownika: </label>
+                    {{ form.username }}
+                </div>
+                <div class="login-form-group">
+                    <label for="id_password">Hasło: </label>
+                    {{ form.password }}
+                </div>
+                <div class="login-form-group">
+                    <button type="submit" id="submit-btn">Login</button>
+                </div>
+            </form>
+            <div class="login-form-register">
+                <p class="login-form-register--paragraph">Nie masz konta? <a class="login-form-register--redirect" href="{% url "registration" %}">Zarejestruj
+                    się</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="{% static "js/login.js" %}"></script>
+{% endblock content %}
