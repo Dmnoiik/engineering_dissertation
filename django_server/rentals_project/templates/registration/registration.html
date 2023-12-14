@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block css_styles %}
-<link rel="stylesheet" href="{% static 'styles/forms/registerStyles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/forms/registerStyles.css' %}">
 {% endblock css_styles %}
 {% block content %}
     <div class="wrapper">
@@ -12,7 +12,7 @@
                     <h2 class="register-form-hero--heading">
                         Załóż bezpłatne konto
                     </h2>
-                    <p class="register-form-hero--paragraph">ciesz się ze wszystkich funkcjonalności!</p>
+                    <p class="register-form-hero--paragraph">Ciesz się ze wszystkich funkcjonalności!</p>
                 </div>
             </section>
             <form method="post" class="register-form">
@@ -28,13 +28,22 @@
                 <div class="register-form-group">
                     <label for="id_password">Hasło: </label>
                     {{ form.password }}
+                    {% if form.password.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 </div>
                 <div class="register-form-group">
-                <button type="submit" id="submit-btn">Login</button>
+                    <button type="submit" id="submit-btn">Login</button>
                 </div>
             </form>
             <div class="register-form-login">
-                <p class="register-form-login--paragraph">Masz już konto? <a class="register-form-login--redirect" href="{% url "login" %}">Zaloguj się</a></p>
+                <p class="register-form-login--paragraph">Masz już konto? <a class="register-form-login--redirect"
+                                                                             href="{% url "login" %}">Zaloguj się</a>
+                </p>
             </div>
         </div>
     </div>

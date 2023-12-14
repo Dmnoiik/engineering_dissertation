@@ -35,7 +35,7 @@ def get_offers_otodom(request):
         cached_offers = cache.get(cache_key_otodom)
         if cached_offers is None:
             result_otodom = otodom_selenium.get_offers_otodom(district_result, town_result)
-            cache.set(cache_key_otodom, result_otodom, timeout=3600)
+            cache.set(cache_key_otodom, result_otodom, timeout=10800)
             return JsonResponse({"offers": result_otodom})
         else:
             return JsonResponse({"offers": cached_offers})
@@ -52,7 +52,7 @@ def get_offers_olx(request):
         cached_offers = cache.get(cache_key_olx)
         if cached_offers is None:
             result_olx = olx_selenium.get_offers_olx(district_result, town_result)
-            cache.set(cache_key_olx, result_olx, timeout=3600)
+            cache.set(cache_key_olx, result_olx, timeout=10800)
             return JsonResponse({"offers": result_olx})
         else:
             return JsonResponse({"offers": cached_offers})
@@ -68,6 +68,9 @@ def get_districts(request, city):
     elif city == "Gdynia":
         districts = pd.read_csv("rentals_app/scripts/dzielnice_gdyni.csv", usecols=["Nazwa dzielnicy"]).to_dict()[
             "Nazwa dzielnicy"]
+        return JsonResponse({"districts": districts})
+    elif city == "Sopot":
+        districts = ["Brodwino", "Dolny Sopot", "Górny Sopot", "Kamienny Potok", "Karlikowo", "Świemirowo"]
         return JsonResponse({"districts": districts})
 
 

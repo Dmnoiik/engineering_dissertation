@@ -9,7 +9,7 @@
 {% block content %}
     {% include "components/header_component.html" %}
     <div class="hidden loading-container" >
-        <img src="{% static 'images/domek_wesoly.svg' %}" alt="Loading Icon">
+        <img src="{% static 'images/domek_wesoly2.svg' %}" alt="Loading Icon">
         <p class="loading-paragraph">Zawijamy oferty, zaraz będą podane na tacy!</p>
     </div>
 
@@ -63,6 +63,17 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="settings-rooms-container">
+                        <p class="rooms-label">Liczba pokoi: </p>
+                        <ul class="rooms-list">
+                            <li class="rooms-list-el"><input class="rooms-input" type="checkbox" value="1">1 pokój</li>
+                            <li class="rooms-list-el"><input class="rooms-input" type="checkbox" value="2">2 pokoje</li>
+                            <li class="rooms-list-el"><input class="rooms-input" type="checkbox" value="3">3 pokoje</li>
+                            <li class="rooms-list-el"><input class="rooms-input" type="checkbox" value="4">4 pokoje</li>
+                        </ul>
+                    </div>
+                    <button class="filter-btn button" type="button">Ustaw filtry</button>
+                    <button class="reverse-filter-btn button" type="button">Reset filtrów</button>
                 </div>
                 <div class="offers-container">
                     <div class="hidden authentication" data-authenticated="{{ user.is_authenticated }}"></div>

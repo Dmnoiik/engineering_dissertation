@@ -67,3 +67,11 @@
 #submit-btn:active {
     background-color: #2c258a; /* even darker on click */
 }
+
+.errorlist li {
+    max-height: 100px; /* Set a maximum height for error messages */
+    max-width: 300px;
+    font-size: 12px;
+    list-style: none;
+    color: red;
+}

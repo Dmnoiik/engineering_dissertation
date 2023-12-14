@@ -35,7 +35,7 @@
                                     <p>{{ favorite_offer.address }}</p>
                                 </div>
                                 <div class="card-details">
-                                    <span class="card-details-info">Pokoje: {{ favorite_offer.rooms }} • {{ favorite_offer.surface }}m²</span>
+                                    <span class="card-details-info">Pokoje: {{ favorite_offer.rooms }} • {{ favorite_offer.surface|floatformat:"0" }}m²</span>
                                 </div>
                             </div>
                             <div class="card-website-info">

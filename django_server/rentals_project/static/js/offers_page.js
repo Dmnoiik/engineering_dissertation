@@ -7,11 +7,24 @@ const isAuthenticated = authenticationEl.getAttribute("data-authenticated") === 
 const csrfToken = document.getElementById("csrfToken").value;
 const loadingEl = document.querySelector(".loading-container");
 const loadingParEl = document.querySelector(".loading-paragraph");
+const minPriceInputEl = document.querySelector(".price-min-input")
+const maxPriceInputEl = document.querySelector(".price-max-input")
+const filterBtn = document.querySelector(".filter-btn");
+const reverseFilterBtn = document.querySelector(".reverse-filter-btn");
 let allOffers = [];
 let filteredOffers = [];
 
 function displayFilteredOrAllOffers() {
-    const offersToDisplay = filteredOffers.length ? filteredOffers : allOffers;
+    // Check if any filter has been applied
+    const isAnyFilterApplied =
+        minPriceInputEl.value !== "" ||
+        maxPriceInputEl.value !== "" ||
+        document.querySelector("input[name='size-input']:checked") !== null ||
+        document.querySelectorAll(".rooms-input:checked").length > 0;
+
+    // Determine which set of offers to display
+    const offersToDisplay = isAnyFilterApplied ? filteredOffers : allOffers;
+
     displayOffers(offersToDisplay);
 }
 
@@ -30,55 +43,55 @@ async function getFavoriteOffers() {
         })
     }
 }
-
 window.onload = async () => {
     try {
         loadingEl.style.display = "flex";
-
         const params = new URLSearchParams(window.location.search);
         const townValue = params.get("town");
         const districtValue = params.get("district");
-        overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
+        overview_par.textContent = `Ładowanie ofert mieszkań w ${districtValue}, ${townValue}`;
 
         const otodomPromise = fetch(`get_offers_otodom?town=${townValue}&district=${districtValue}`);
         const olxPromise = fetch(`get_offers_olx?town=${townValue}&district=${districtValue}`);
 
-        const otodomResponse = await otodomPromise;
+        const processResponse = async (responsePromise, source) => {
+            const response = await responsePromise;
+            if (response.ok) {
+                const data = await response.json();
+                allOffers = allOffers.concat(data.offers);
+                overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
+                displayOffers(allOffers);
+            } else {
+                console.error(`Failed to fetch offers from ${source}`);
+            }
+        };
 
-        if (otodomResponse.ok) {
-            const otodomData = await otodomResponse.json();
-            allOffers = otodomData.offers;
-            overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
-            displayOffers(allOffers);
+        // Handle each promise separately
+        processResponse(otodomPromise, 'Otodom').finally(() => {
             loadingEl.style.display = "none";
-        } else {
-            console.error("Failed to fetch offers from Otodom");
-        }
+        });
 
-        const olxResponse = await olxPromise;
+        processResponse(olxPromise, 'OLX').finally(() => {
+            loadingEl.style.display = "none";
+        });
 
-        if (olxResponse.ok) {
-            const olxData = await olxResponse.json();
-            allOffers = allOffers.concat(olxData.offers);
-            overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
-            displayOffers(allOffers);
-        } else {
-            console.error("Failed to fetch offers from OLX");
-            // Handle the error, e.g., display a message to the user
-        }
-        overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
         await getFavoriteOffers();
     } catch (error) {
         console.error("An error occurred:", error);
-    } finally {
         loadingEl.style.display = "none";
     }
+};
 
-}
 
 function displayOffers(offers) {
     offersContainer.innerHTML = '';
-
+    if (offers.length === 0) {
+        offersContainer.innerHTML = `
+        <div class="no-offers-container">
+        <img src="/static/images/smutny_domek2.svg" class="no-offers-image">
+        <p class='no-offers-alert'>Nie udało się znaleźć lub dopasować żadnych ofert. Może warto zresetować filtry lub znaleźć inną dzielnicę?</p>
+        </div>`
+    }
     for (const offer of offers) {
         const rentPrice = offer.rent !== -1 ? offer.rent : "N/A"
         let heartIconHtml = '';
@@ -137,18 +150,6 @@ sortElement.addEventListener("change", () => {
     }
 })
 
-sizeInputs.forEach(sizeInput => {
-    sizeInput.addEventListener("change", (event) => {
-        const intValue = parseInt(event.target.value);
-        filteredOffers = allOffers.filter(offer => offer.surface >= intValue);
-        if (filteredOffers.length === 0) {
-            offersContainer.innerHTML = "";
-        } else {
-            displayFilteredOrAllOffers();
-        }
-    })
-})
-
 async function toggleFavorite(heartIcon) {
     heartIcon.classList.toggle('is-favorite');
     const offerId = heartIcon.closest('.card').id; // Assuming offer_id is the HTML element ID
@@ -173,4 +174,51 @@ offersContainer.addEventListener('click', function (event) {
         toggleFavorite(event.target);
     }
 });
+
+filterBtn.addEventListener("click", () => {
+    const minPrice = parseFloat(minPriceInputEl.value) || null;
+    const maxPrice = parseFloat(maxPriceInputEl.value) || null;
+    let checkedRadioInput = document.querySelector("input[name='size-input']:checked");
+    checkedRadioInput = checkedRadioInput ? parseInt(checkedRadioInput.value) : null;
+
+    const selectedRoomsCheckboxes = document.querySelectorAll(".rooms-input:checked");
+    const selectedRooms = Array.from(selectedRoomsCheckboxes).map(checkbox => parseInt(checkbox.value));
+
+    filteredOffers = allOffers.filter(offer => {
+        // Price filter
+        const priceFilter = (minPrice === null || offer.price >= minPrice) &&
+            (maxPrice === null || offer.price <= maxPrice);
+
+        // Size filter
+        const sizeFilter = checkedRadioInput === null || offer.surface >= checkedRadioInput;
+
+        // Rooms filter
+        const roomsFilter = selectedRooms.length === 0 || selectedRooms.includes(offer.rooms);
+
+        return priceFilter && sizeFilter && roomsFilter;
+    });
+
+    displayFilteredOrAllOffers();
+});
+
+reverseFilterBtn.addEventListener("click", () => {
+    minPriceInputEl.value = "";
+    maxPriceInputEl.value = "";
+    const checkedSizeInput = document.querySelector("input[name='size-input']:checked");
+    if (checkedSizeInput) {
+        checkedSizeInput.checked = null;
+    }
+    const selectedRoomsCheckboxes = document.querySelectorAll(".rooms-input:checked");
+    if (selectedRoomsCheckboxes) {
+        selectedRoomsCheckboxes.forEach(checkbox => {
+            checkbox.checked = null;
+        })
+    }
+
+    displayOffers(allOffers);
+})
+
+
+
+
 

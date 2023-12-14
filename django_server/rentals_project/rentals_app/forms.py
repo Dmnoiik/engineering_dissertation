@@ -13,17 +13,17 @@ class UserRegistrationForm(forms.Form):
         password = self.cleaned_data['password']
 
         if len(password) < 8:
-            raise forms.ValidationError("Password must be at least 8 characters long.")
+            raise forms.ValidationError("Hasło musi zawierać co najmniej 8 znaków.")
 
         if not re.search(r'[A-Z]', password) or not re.search(r'[a-z]', password) or not re.search(r'[0-9]',
                                                                                                    password) or not re.search(
             r'[!@#$%^&*]', password):
-            raise forms.ValidationError("Password must include uppercase, lowercase, number, and special character.")
+            raise forms.ValidationError("Hasło musi zawierać wielką literę, małą literę, cyfrę i znak specjalny.")
 
         common_patterns = ["123", "qwerty", "haslozgaslo", "password", self.cleaned_data["username"].lower()]
         for pattern in common_patterns:
             if pattern in password.lower():
-                raise forms.ValidationError("Password must not contain common patterns or personal information.")
+                raise forms.ValidationError("Hasło nie może zawierać typowych wzorców ani danych osobowych.")
 
         return password
 
@@ -64,10 +64,8 @@ class UserLoginForm(forms.Form):
         user = authenticate(username=username, password=password)
 
         if user:
-            # Log in the user using Django's authentication system
             if user.is_active:
                 request.session.set_expiry(0)  # Session expiry (0 means session expires when the browser is closed)
                 auth_login(request, user)
                 return user
-
         return None
