@@ -8,6 +8,11 @@
 
 {% block content %}
     {% include "components/header_component.html" %}
+    <div class="hidden loading-container" >
+        <img src="{% static 'images/domek_wesoly.svg' %}" alt="Loading Icon">
+        <p class="loading-paragraph">Zawijamy oferty, zaraz będą podane na tacy!</p>
+    </div>
+
     <div class="wrapper">
         <div class="container">
             <div class="info-container">
@@ -27,12 +32,12 @@
                 <div class="settings-container">
                     <div class="settings-price-container">
                         <div class="settings-price-min">
-                                <p class="price-label">Cena minimalna</p>
+                            <p class="price-label">Cena minimalna</p>
                             <div class="input-prefix">
                                 <span class="price-min-prefix">zł</span>
                                 <input type="text" class="price-min-input">
                             </div>
-                         </div>
+                        </div>
                         <div class="settings-price-max">
                             <p class="price-label">Cena maksymalna</p>
                             <div class="input-prefix">
@@ -44,15 +49,23 @@
                     <div class="settings-size-container">
                         <p class="size-label">Powierzchnia: </p>
                         <ul class="size-list">
-                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input" value="15">15 m2 lub więcej</li>
-                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input" value="30">30 m2 lub więcej</li>
-                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input" value="45">45 m2 lub więcej</li>
-                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input" value="60">60 m2 lub więcej</li>
+                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input"
+                                                            value="15">15 m2 lub więcej
+                            </li>
+                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input"
+                                                            value="30">30 m2 lub więcej
+                            </li>
+                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input"
+                                                            value="45">45 m2 lub więcej
+                            </li>
+                            <li class="size-list-el"><input class="size-input" type="radio" name="size-input"
+                                                            value="60">60 m2 lub więcej
+                            </li>
                         </ul>
                     </div>
                 </div>
                 <div class="offers-container">
-                <div class="hidden authentication" data-authenticated="{{ user.is_authenticated }}"></div>
+                    <div class="hidden authentication" data-authenticated="{{ user.is_authenticated }}"></div>
                 </div>
             </div>
         </div>

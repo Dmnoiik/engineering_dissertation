@@ -17,8 +17,14 @@ def index(request):
 
 
 def offers_page(request):
-    return render(request, "offers_page.html")
-
+    return render(request, "offers_page.html", {})
+@login_required
+def get_favorite_offers(request):
+    user = request.user
+    if user.is_authenticated:
+        favorite_offers = FavoriteOffer.objects.filter(user=user).all()
+        data = list(favorite_offers.values())
+        return JsonResponse({"favorite_offers": data}, safe=False)
 
 def get_offers_otodom(request):
     from .scripts import otodom_selenium
@@ -107,8 +113,10 @@ def logout_view(request):
 def toggle_favorite_offer(request):
     data = json.loads(request.body)
     user = request.user
-    offer_id = data["offer_id"]
-
+    try:
+        offer_id = data["offer_id"]
+    except TypeError:
+        offer_id = data
     favorite_offer = FavoriteOffer.objects.filter(user=user, offer_id=offer_id).first()
     if favorite_offer:
         favorite_offer.delete()

@@ -164,11 +164,7 @@ body, html {
 
 .heart-icon i {
     font-size: 24px; /* Adjust as necessary */
-    color: #fff; /* Default color */
-}
-
-.heart-icon i.is-favorite {
-    color: red; /* Color when clicked */
+    color: red; /* Default color */
 }
 
 .heart-icon i:active {

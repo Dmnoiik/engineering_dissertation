@@ -25,10 +25,10 @@ SECRET_KEY = 'django-insecure-q-d3qoqq88+)62b3yx!h)_yb&5*+4)=df%_@-5q*38m=2q9jq7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 LOGIN_URL = "login"
-LOGOUT_REDIRECT_URL = "login"
+LOGOUT_REDIRECT_URL = "index"
 # Application definition
 
 INSTALLED_APPS = [

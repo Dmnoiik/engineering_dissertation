@@ -2,6 +2,7 @@
 {% load static %}
 {% block css_styles %}
     <link rel="stylesheet" href="{% static 'styles/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 {% endblock css_styles %}
 {% block content %}
     {% include "components/header_component.html" %}
@@ -11,17 +12,15 @@
                 <div class="user-welcome">
                     <h2>Cześć, {{ user.username }}!</h2>
                 </div>
-                <div class="user-actions">
-                    <a href="{% url "index" %}">
-                        <button type="button">Strona główna</button>
-                    </a>
-                </div>
             </header>
             <section class="favorites-section">
                 <h2>Twoje zapisane oferty: </h2>
                 <div class="offers-container">
                     {% for favorite_offer in favorite_offers %}
                         <div class="card" id="{{ favorite_offer.offer_id }}">
+                        <div class="heart-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
                         <a href="{{ favorite_offer.link }}" target="_blank">
                             <div class="card-image">
                                 <img src={{ favorite_offer.image_link }}>
@@ -49,5 +48,7 @@
     </section>
     </main>
     </div>
+    <input type="hidden" id="csrfToken" value="{{ csrf_token }}">
     {% include "components/footer_component.html" %}
+    <script src="{% static "js/dashboard_scripts.js" %}"></script>
 {% endblock %}

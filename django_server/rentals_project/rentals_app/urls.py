@@ -11,5 +11,6 @@ urlpatterns = [
     path('register_user', views.registration_view, name="registration"),
     path("dashboard", views.dashboard_view, name="dashboard"),
     path("logout_user", LogoutView.as_view(), name="logout"),
-    path("toggle_favorite", views.toggle_favorite_offer, name="toggle_favorite_offer")
+    path("toggle_favorite", views.toggle_favorite_offer, name="toggle_favorite_offer"),
+    path("get_favorite_offers", views.get_favorite_offers, name="get_favorite_offers")
 ]

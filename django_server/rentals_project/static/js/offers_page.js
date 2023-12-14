@@ -3,43 +3,81 @@ const sortElement = document.querySelector(".info-sorting");
 const overview_par = document.querySelector(".info-overview");
 const sizeInputs = document.querySelectorAll(".size-input");
 const authenticationEl = document.querySelector(".authentication");
+const isAuthenticated = authenticationEl.getAttribute("data-authenticated") === "True";
 const csrfToken = document.getElementById("csrfToken").value;
+const loadingEl = document.querySelector(".loading-container");
+const loadingParEl = document.querySelector(".loading-paragraph");
 let allOffers = [];
 let filteredOffers = [];
+
 function displayFilteredOrAllOffers() {
     const offersToDisplay = filteredOffers.length ? filteredOffers : allOffers;
     displayOffers(offersToDisplay);
 }
 
+async function getFavoriteOffers() {
+    if (isAuthenticated) {
+        const response = await fetch("/get_favorite_offers")
+        const data = await response.json();
+        const favoriteOffersData = data["favorite_offers"];
+        favoriteOffersData.forEach(offer => {
+            const offerId = offer["offer_id"];
+            const availableOffer = document.getElementById(`${offerId}`);
+            if (availableOffer) {
+                const heartIcon = availableOffer.querySelector(".fa-heart");
+                heartIcon.classList.add("is-favorite");
+            }
+        })
+    }
+}
+
 window.onload = async () => {
-    const params = new URLSearchParams(window.location.search);
-    const townValue = params.get("town");
-    const districtValue = params.get("district");
+    try {
+        loadingEl.style.display = "flex";
 
-    const otodomPromise = fetch(`get_offers_otodom?town=${townValue}&district=${districtValue}`);
+        const params = new URLSearchParams(window.location.search);
+        const townValue = params.get("town");
+        const districtValue = params.get("district");
+        overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
 
-    const olxPromise = fetch(`get_offers_olx?town=${townValue}&district=${districtValue}`);
+        const otodomPromise = fetch(`get_offers_otodom?town=${townValue}&district=${districtValue}`);
+        const olxPromise = fetch(`get_offers_olx?town=${townValue}&district=${districtValue}`);
 
-    const otodomResponse = await otodomPromise;
+        const otodomResponse = await otodomPromise;
 
-    const otodomData = await otodomResponse.json();
+        if (otodomResponse.ok) {
+            const otodomData = await otodomResponse.json();
+            allOffers = otodomData.offers;
+            overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
+            displayOffers(allOffers);
+            loadingEl.style.display = "none";
+        } else {
+            console.error("Failed to fetch offers from Otodom");
+        }
 
-    allOffers = otodomData.offers;
-    overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
-    displayOffers(allOffers);
+        const olxResponse = await olxPromise;
 
-    const olxResponse = await olxPromise;
+        if (olxResponse.ok) {
+            const olxData = await olxResponse.json();
+            allOffers = allOffers.concat(olxData.offers);
+            overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
+            displayOffers(allOffers);
+        } else {
+            console.error("Failed to fetch offers from OLX");
+            // Handle the error, e.g., display a message to the user
+        }
+        overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
+        await getFavoriteOffers();
+    } catch (error) {
+        console.error("An error occurred:", error);
+    } finally {
+        loadingEl.style.display = "none";
+    }
 
-    const olxData = await olxResponse.json();
-
-    allOffers = allOffers.concat(olxData.offers);
-    overview_par.textContent = `${allOffers.length} mieszkań do wynajęcia w ${districtValue}, ${townValue}`;
-    displayOffers(allOffers);
 }
 
 function displayOffers(offers) {
-    offersContainer.innerHTML = ''; // Clear previous content
-    const isAuthenticated = authenticationEl.getAttribute("data-authenticated") === "True";
+    offersContainer.innerHTML = '';
 
     for (const offer of offers) {
         const rentPrice = offer.rent !== -1 ? offer.rent : "N/A"
@@ -85,20 +123,16 @@ sortElement.addEventListener("change", () => {
     if (sortElement.value === "asc") {
         const sortedOffers = [...currentArray].sort((a, b) => a.price - b.price);
         displayOffers(sortedOffers)
-    }
-    else if (sortElement.value === "desc") {
+    } else if (sortElement.value === "desc") {
         const sortedOffers = [...currentArray].sort((a, b) => b.price - a.price);
         displayOffers(sortedOffers);
-    }
-    else if (sortElement.value === "rent-asc") {
+    } else if (sortElement.value === "rent-asc") {
         const sortedOffers = [...currentArray].sort((a, b) => a.rent - b.rent);
         displayOffers(sortedOffers);
-    }
-    else if (sortElement.value === "rent-desc") {
+    } else if (sortElement.value === "rent-desc") {
         const sortedOffers = [...currentArray].sort((a, b) => b.rent - a.rent);
         displayOffers(sortedOffers);
-    }
-    else {
+    } else {
         displayFilteredOrAllOffers()
     }
 })
@@ -110,7 +144,7 @@ sizeInputs.forEach(sizeInput => {
         if (filteredOffers.length === 0) {
             offersContainer.innerHTML = "";
         } else {
-        displayFilteredOrAllOffers();
+            displayFilteredOrAllOffers();
         }
     })
 })
@@ -129,12 +163,12 @@ async function toggleFavorite(heartIcon) {
             },
             body: JSON.stringify(offer)
         })
-    }  catch (error) {
+    } catch (error) {
         console.error('Error:', error);
     }
 }
 
-offersContainer.addEventListener('click', function(event) {
+offersContainer.addEventListener('click', function (event) {
     if (event.target.classList.contains('fa-heart')) {
         toggleFavorite(event.target);
     }
