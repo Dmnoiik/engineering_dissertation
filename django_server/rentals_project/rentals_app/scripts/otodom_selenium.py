@@ -7,7 +7,7 @@ import time
 
 
 def get_offers_otodom(district, town):
-    CHROME_DRIVER_PATH = "C:/Users/dmars/Documents/PRACA_INZYNIERSKA/project_python/django_server/rentals_project/rentals_app/scripts/chromedriver.exe"
+    CHROME_DRIVER_PATH = "rentals_app/scripts/chromedriver.exe"
     chrome_options = Options()
     user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     chrome_options.add_argument(f'user-agent={user_agent}')
