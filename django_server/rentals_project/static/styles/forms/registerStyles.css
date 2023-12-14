@@ -75,3 +75,7 @@
     list-style: none;
     color: red;
 }
+
+.register-form-login--redirect {
+    color: #481bfd;
+}

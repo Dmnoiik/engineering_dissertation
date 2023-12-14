@@ -67,3 +67,7 @@
 #submit-btn:active {
     background-color: #2c258a; /* even darker on click */
 }
+
+.login-form-register--redirect {
+    color: #481bfd;
+}
